@@ -1,0 +1,30 @@
+sudo apt-get install build-essential git wget gpg curl htop pkg-config libfreetype6-dev libfontconfig1-dev libxcb-xfixes0-dev -y
+sudo apt-get install libxkbcommon-dev -y
+
+# python3
+sudo apt-get install python3 python3-pip -y
+
+# cmake
+sudo apt-get install libssl-dev -y
+sudo apt install cmake -y
+
+# Eigen
+sudo apt-get install libeigen3-dev
+
+# RBDL
+mkdir ~/Library && cd ~/Library 
+sudo apt-get install libboost-all-dev -y
+git clone https://github.com/rbdl/rbdl.git
+cd rbdl
+git submodule init
+git submodule update
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release -DRBDL_BUILD_ADDON_URDFREADER=ON
+make
+sudo make install
+
+# QT5
+sudo apt install qtcreator qtbase5-dev qt5-qmake -y
+
+# Mujoco
+pip install mujoco
