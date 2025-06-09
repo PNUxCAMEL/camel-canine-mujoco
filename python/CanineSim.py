@@ -30,6 +30,8 @@ class Canine:
         mujoco.mj_step(self.m, self.d)
 
     def startSimulation(self):
+        render_dt = 1/60  # 60Hz rendering
+        last_render_time = time.time()
         with mujoco.viewer.launch_passive(self.m, self.d) as viewer:
             while viewer.is_running():
                 step_start = time.time()
@@ -40,8 +42,11 @@ class Canine:
                 self.shm.simData.qd = self.d.qvel[6:]
                 self.shm.simData.quat = self.d.qpos[3:7]
                 self.shm.simData.gyro = self.d.qvel[3:6]
-                
-                viewer.sync()
+
+                # rendering control
+                if (time.time() - last_render_time) >= render_dt:
+                    viewer.sync()
+                    last_render_time = time.time()
 
                 time_until_next_step = self.m.opt.timestep - (time.time() - step_start)
                 if time_until_next_step > 0:
@@ -82,6 +87,8 @@ class CanineGadget:
         mujoco.mj_step(self.m, self.d)
 
     def startSimulation(self):
+        render_dt = 1/60  # 60Hz rendering
+        last_render_time = time.time()
         with mujoco.viewer.launch_passive(self.m, self.d) as viewer:
             while viewer.is_running():
                 step_start = time.time()
@@ -101,7 +108,10 @@ class CanineGadget:
                 self.shm.simData.arm_qd = self.d.qvel[18:18+6]
                 self.shm.simData.grp_qd = self.d.qvel[24:24+2]
                 
-                viewer.sync()
+                # rendering control
+                if (time.time() - last_render_time) >= render_dt:
+                    viewer.sync()
+                    last_render_time = time.time()
 
                 time_until_next_step = self.m.opt.timestep - (time.time() - step_start)
                 if time_until_next_step > 0:
@@ -141,6 +151,8 @@ class CanineGadgetLight:
         mujoco.mj_step(self.m, self.d)
 
     def startSimulation(self):
+        render_dt = 1/60  # 60Hz rendering
+        last_render_time = time.time()
         with mujoco.viewer.launch_passive(self.m, self.d) as viewer:
             while viewer.is_running():
                 step_start = time.time()
@@ -160,7 +172,10 @@ class CanineGadgetLight:
                 self.shm.simData.arm_qd = self.d.qvel[18:18+6]
                 self.shm.simData.grp_qd = self.d.qvel[24:24+2]
                 
-                viewer.sync()
+                # rendering control
+                if (time.time() - last_render_time) >= render_dt:
+                    viewer.sync()
+                    last_render_time = time.time()
 
                 time_until_next_step = self.m.opt.timestep - (time.time() - step_start)
                 if time_until_next_step > 0:
